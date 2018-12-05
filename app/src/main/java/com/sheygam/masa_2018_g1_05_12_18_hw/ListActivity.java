@@ -10,12 +10,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class ListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private ListView contactList;
     private ContactListAdapter adapter;
     private TextView emptyTxt;
+    private StoreProvider provider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        provider = new StoreProvider(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         contactList = findViewById(R.id.contactList);
@@ -24,9 +28,25 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        List<Contact> list = provider.getList();
+        if(list.isEmpty()){
+            emptyTxt.setVisibility(View.VISIBLE);
+            contactList.setVisibility(View.GONE);
+        }else{
+            emptyTxt.setVisibility(View.GONE);
+            contactList.setVisibility(View.VISIBLE);
+            adapter = new ContactListAdapter(list);
+            contactList.setAdapter(adapter);
+        }
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this,InfoActivity.class);
         intent.putExtra("MODE",InfoActivity.VIEW_MODE);
+        intent.putExtra("POS",position);
         startActivity(intent);
     }
 

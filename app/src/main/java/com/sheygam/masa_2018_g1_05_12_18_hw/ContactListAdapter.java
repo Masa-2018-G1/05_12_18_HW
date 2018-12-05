@@ -6,10 +6,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ContactListAdapter extends BaseAdapter {
-    private ArrayList<Contact> contacts;
+    private List<Contact> contacts;
+
+    public ContactListAdapter(List<Contact> list) {
+        contacts = list;
+    }
 
 
     @Override

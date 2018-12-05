@@ -9,12 +9,17 @@ import android.widget.EditText;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int LIST_ACTIVITY = 0x01;
+    private StoreProvider storeProvider;
 
     private EditText inputEmail, inputPassword;
     private Button loginBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        storeProvider = new StoreProvider(this);
         super.onCreate(savedInstanceState);
+        if(storeProvider.getToken()!=null){
+            showList();
+        }
         setContentView(R.layout.activity_login);
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
@@ -36,11 +41,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void saveCurrent() {
-
+        String token = inputEmail.getText() + "&" + inputPassword.getText();
+        storeProvider.saveToken(token);
     }
 
     private void clearLogin() {
-
+        storeProvider.clearToken();
     }
 
     @Override
