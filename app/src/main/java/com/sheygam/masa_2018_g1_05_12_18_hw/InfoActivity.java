@@ -30,7 +30,7 @@ public class InfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        provider = new StoreProvider(this);
+        provider = StoreProvider.getInstance();
         super.onCreate(savedInstanceState);
         mode = getIntent().getIntExtra("MODE",EDIT_MODE);
         pos = getIntent().getIntExtra("POS",-1);

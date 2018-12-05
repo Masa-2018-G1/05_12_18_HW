@@ -15,7 +15,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button loginBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        storeProvider = new StoreProvider(this);
+        storeProvider = StoreProvider.getInstance();
         super.onCreate(savedInstanceState);
         if(storeProvider.getToken()!=null){
             showList();

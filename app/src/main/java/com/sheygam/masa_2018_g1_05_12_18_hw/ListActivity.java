@@ -19,12 +19,13 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
     private StoreProvider provider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        provider = new StoreProvider(this);
+        provider = StoreProvider.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         contactList = findViewById(R.id.contactList);
         emptyTxt = findViewById(R.id.emptyTxt);
         contactList.setOnItemClickListener(this);
+
     }
 
     @Override

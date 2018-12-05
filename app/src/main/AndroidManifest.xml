@@ -3,6 +3,7 @@
     package="com.sheygam.masa_2018_g1_05_12_18_hw">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
