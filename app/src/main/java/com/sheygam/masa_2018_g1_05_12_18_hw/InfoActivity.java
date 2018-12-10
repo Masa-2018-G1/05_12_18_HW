@@ -1,5 +1,6 @@
 package com.sheygam.masa_2018_g1_05_12_18_hw;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,31 +18,28 @@ public class InfoActivity extends AppCompatActivity {
 
     private Contact curr;
 
-    private ViewGroup editWrapper, textWrapper;
+    private ViewGroup editWrapper, textWrapper, progressFrame;
     private TextView nameTxt, emailTxt, phoneTxt, addressTxt, descTxt;
     private EditText inputName, inputEmail, inputPhone, inputAddress,inputDesc;
 
     private MenuItem doneItem, deleteItem, editItem;
 
+
     private int pos = -1;
     private int mode;
+    private boolean isProgress = false;
 
-    private StoreProvider provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        provider = StoreProvider.getInstance();
         super.onCreate(savedInstanceState);
         mode = getIntent().getIntExtra("MODE",EDIT_MODE);
         pos = getIntent().getIntExtra("POS",-1);
-        if(pos >= 0){
-            curr = provider.get(pos);
-        }else{
-            curr = new Contact("","","","","");
-        }
+
         setContentView(R.layout.activity_info);
         editWrapper = findViewById(R.id.editWrapper);
         textWrapper = findViewById(R.id.textWrapper);
+        progressFrame = findViewById(R.id.progressFrame);
         nameTxt = findViewById(R.id.nameTxt);
         emailTxt = findViewById(R.id.emailTxt);
         phoneTxt = findViewById(R.id.phoneTxt);
@@ -52,6 +50,13 @@ public class InfoActivity extends AppCompatActivity {
         inputPhone = findViewById(R.id.inputPhone);
         inputAddress = findViewById(R.id.inputAddress);
         inputDesc = findViewById(R.id.inputDesc);
+        progressFrame.setOnClickListener(null);
+
+        if(pos >= 0){
+            new LoadCurrentTask().execute();
+        }else{
+            curr = new Contact("","","","","");
+        }
     }
 
     @Override
@@ -63,43 +68,37 @@ public class InfoActivity extends AppCompatActivity {
         if (mode == EDIT_MODE){
             getCurrentData();
             showEditMode();
-        }else{
-            setCurrentData();
-            showViewMode();
         }
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.done_item){
+        if(item.getItemId() == R.id.done_item && !isProgress){
             if(getCurrentData()) {
                 saveCurrent();
-                finish();
             }
-        }else if(item.getItemId() == R.id.edit_item){
+        }else if(item.getItemId() == R.id.edit_item && !isProgress){
             setCurrentData();
             showEditMode();
             mode = EDIT_MODE;
-        }else if(item.getItemId() == R.id.delete_item){
+        }else if(item.getItemId() == R.id.delete_item && !isProgress){
             deleteCurrent();
-            finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void deleteCurrent() {
         if(pos>=0){
-            provider.remove(pos);
+            new RemoveTask().execute();
         }
-        finish();
     }
 
     private void saveCurrent() {
         if(pos>=0){
-            provider.update(pos,curr);
+            new UpdateTask().execute();
         }else{
-            provider.add(curr);
+            new AddTask().execute();
         }
     }
 
@@ -161,5 +160,114 @@ public class InfoActivity extends AppCompatActivity {
                 && !tmp.getPhone().trim().isEmpty()
                 && !tmp.getAddress().trim().isEmpty()
                 && !tmp.getDescription().trim().isEmpty();
+    }
+
+    private class LoadCurrentTask extends AsyncTask<Void,Void,Contact>{
+        @Override
+        protected void onPreExecute() {
+            isProgress = true;
+            progressFrame.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Contact doInBackground(Void... voids) {
+            Contact cnt = StoreProvider.getInstance().get(pos);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return cnt;
+        }
+
+        @Override
+        protected void onPostExecute(Contact contact) {
+            curr = contact;
+            isProgress = false;
+            progressFrame.setVisibility(View.GONE);
+            setCurrentData();
+            showViewMode();
+        }
+    }
+
+    private class RemoveTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected void onPreExecute() {
+            isProgress = true;
+            progressFrame.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            StoreProvider.getInstance().remove(pos);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            isProgress = false;
+            progressFrame.setVisibility(View.GONE);
+            finish();
+        }
+    }
+
+    private class UpdateTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected void onPreExecute() {
+            isProgress = true;
+            progressFrame.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            StoreProvider.getInstance().update(pos,curr);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            isProgress = false;
+            progressFrame.setVisibility(View.GONE);
+            finish();
+        }
+    }
+
+    private class AddTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected void onPreExecute() {
+            isProgress = true;
+            progressFrame.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            StoreProvider.getInstance().add(curr);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            isProgress = false;
+            progressFrame.setVisibility(View.GONE);
+            finish();
+        }
     }
 }
