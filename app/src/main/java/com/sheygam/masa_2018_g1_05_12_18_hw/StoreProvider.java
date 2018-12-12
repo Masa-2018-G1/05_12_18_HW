@@ -2,6 +2,8 @@ package com.sheygam.masa_2018_g1_05_12_18_hw;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +14,14 @@ public class StoreProvider {
     private static final String AUTH_CURRENT = "CURR";
     private static final String SP_DATA = "CONTACTS";
     private Context context;
+    private Gson gson;
 
 //    public StoreProvider(Context context) {
 //        this.context = context;
 //    }
 
     private StoreProvider(){
-
+        gson = new Gson();
     }
 
     public void setContext(Context context){
@@ -53,16 +56,18 @@ public class StoreProvider {
 
     public List<Contact> getList(){
         ArrayList<Contact> list = new ArrayList<>();
+        ContactList contactList = new ContactList(list);
         String token = getToken();
         String data = context.getSharedPreferences(SP_DATA,Context.MODE_PRIVATE)
                 .getString(token,null);
         if(data!=null){
-            String[] contacts = data.split(";");
-            for (String c : contacts) {
-                list.add(Contact.newInstance(c));
-            }
+//            String[] contacts = data.split(";");
+//            for (String c : contacts) {
+//                list.add(Contact.newInstance(c));
+//            }
+            contactList = gson.fromJson(data,ContactList.class);
         }
-        return list;
+        return contactList.getContacts();
     }
 
     public void add(Contact contact){
@@ -89,16 +94,18 @@ public class StoreProvider {
     }
 
     private void saveContacts(List<Contact> list){
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < list.size(); i++) {
-            str.append(list.get(i).toString());
-            if(i < list.size()-1){
-                str.append(";");
-            }
-        }
+//        StringBuilder str = new StringBuilder();
+//        for (int i = 0; i < list.size(); i++) {
+//            str.append(list.get(i).toString());
+//            if(i < list.size()-1){
+//                str.append(";");
+//            }
+//        }
+        ContactList contactList = new ContactList(list);
+        String json = gson.toJson(contactList);
         context.getSharedPreferences(SP_DATA,Context.MODE_PRIVATE)
                 .edit()
-                .putString(getToken(),str.toString())
+                .putString(getToken(),json)
                 .apply();
     }
 
