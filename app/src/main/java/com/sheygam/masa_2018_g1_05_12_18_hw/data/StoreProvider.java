@@ -1,8 +1,10 @@
-package com.sheygam.masa_2018_g1_05_12_18_hw;
+package com.sheygam.masa_2018_g1_05_12_18_hw.data;
 
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.model.Contact;
+import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.model.ContactList;
 
 import java.util.ArrayList;
 import java.util.List;

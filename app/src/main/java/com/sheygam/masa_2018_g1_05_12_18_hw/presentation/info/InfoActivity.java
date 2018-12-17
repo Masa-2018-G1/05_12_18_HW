@@ -1,4 +1,4 @@
-package com.sheygam.masa_2018_g1_05_12_18_hw;
+package com.sheygam.masa_2018_g1_05_12_18_hw.presentation.info;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.sheygam.masa_2018_g1_05_12_18_hw.R;
+import com.sheygam.masa_2018_g1_05_12_18_hw.data.StoreProvider;
+import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.model.Contact;
 
 public class InfoActivity extends AppCompatActivity {
 

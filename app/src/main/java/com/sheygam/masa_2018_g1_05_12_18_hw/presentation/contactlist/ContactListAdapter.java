@@ -1,10 +1,13 @@
-package com.sheygam.masa_2018_g1_05_12_18_hw;
+package com.sheygam.masa_2018_g1_05_12_18_hw.presentation.contactlist;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.sheygam.masa_2018_g1_05_12_18_hw.R;
+import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.model.Contact;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.sheygam.masa_2018_g1_05_12_18_hw;
+package com.sheygam.masa_2018_g1_05_12_18_hw.presentation.model;
 
 
 import java.util.List;

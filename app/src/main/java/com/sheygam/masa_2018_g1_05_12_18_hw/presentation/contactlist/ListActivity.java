@@ -1,4 +1,4 @@
-package com.sheygam.masa_2018_g1_05_12_18_hw;
+package com.sheygam.masa_2018_g1_05_12_18_hw.presentation.contactlist;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,6 +11,11 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.info.InfoActivity;
+import com.sheygam.masa_2018_g1_05_12_18_hw.R;
+import com.sheygam.masa_2018_g1_05_12_18_hw.data.StoreProvider;
+import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.model.Contact;
 
 import java.util.List;
 

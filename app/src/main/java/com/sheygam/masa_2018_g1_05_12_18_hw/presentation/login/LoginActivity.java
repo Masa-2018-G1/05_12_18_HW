@@ -1,4 +1,4 @@
-package com.sheygam.masa_2018_g1_05_12_18_hw;
+package com.sheygam.masa_2018_g1_05_12_18_hw.presentation.login;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Toast;
+
+import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.contactlist.ListActivity;
+import com.sheygam.masa_2018_g1_05_12_18_hw.R;
+import com.sheygam.masa_2018_g1_05_12_18_hw.data.StoreProvider;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int LIST_ACTIVITY = 0x01;
