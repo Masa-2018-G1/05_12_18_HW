@@ -12,11 +12,13 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.sheygam.masa_2018_g1_05_12_18_hw.data.HttpProvider;
 import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.info.InfoActivity;
 import com.sheygam.masa_2018_g1_05_12_18_hw.R;
 import com.sheygam.masa_2018_g1_05_12_18_hw.data.StoreProvider;
 import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.model.Contact;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -113,12 +115,15 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
 
         @Override
         protected Void doInBackground(Void... voids) {
-            list = StoreProvider.getInstance().getList();
+            String token = StoreProvider.getInstance().getToken();
             try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
+                list = HttpProvider.getInstance().getContacts(token).getContacts();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }catch (Exception e) {
                 e.printStackTrace();
             }
+
             return null;
         }
 

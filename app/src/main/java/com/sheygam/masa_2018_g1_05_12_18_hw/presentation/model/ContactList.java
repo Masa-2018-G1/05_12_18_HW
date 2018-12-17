@@ -7,6 +7,7 @@ public class ContactList {
     private List<Contact> contacts;
 
     public ContactList() {
+
     }
 
     public ContactList(List<Contact> contacts) {

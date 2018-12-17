@@ -65,7 +65,7 @@ public class StoreProvider {
         if(data!=null){
 //            String[] contacts = data.split(";");
 //            for (String c : contacts) {
-//                list.add(Contact.newInstance(c));
+//                list.add(ContactDto.newInstance(c));
 //            }
             contactList = gson.fromJson(data,ContactList.class);
         }

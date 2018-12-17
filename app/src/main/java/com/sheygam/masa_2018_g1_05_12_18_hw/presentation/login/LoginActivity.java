@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.sheygam.masa_2018_g1_05_12_18_hw.data.HttpProvider;
 import com.sheygam.masa_2018_g1_05_12_18_hw.presentation.contactlist.ListActivity;
 import com.sheygam.masa_2018_g1_05_12_18_hw.R;
 import com.sheygam.masa_2018_g1_05_12_18_hw.data.StoreProvider;
@@ -65,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private class LoginTask extends AsyncTask<Void,Void,Void>{
         private String email, password;
+        private boolean isSuccess = true;
 
         @Override
         protected void onPreExecute() {
@@ -75,12 +78,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         @Override
         protected Void doInBackground(Void... voids) {
-            String token = email + "&" + password;
-            StoreProvider.getInstance().saveToken(token);
+//            String token = email + "&" + password;
+//
+//            StoreProvider.getInstance().saveToken(token);
             try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
+                String token  = HttpProvider.getInstance().login(email,password);
+                StoreProvider.getInstance().saveToken(token);
+            } catch (Exception e) {
                 e.printStackTrace();
+                isSuccess = false;
             }
             return null;
         }
@@ -88,7 +94,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPostExecute(Void aVoid) {
             progressFrame.setVisibility(View.GONE);
-            showList();
+            if(isSuccess) {
+                showList();
+            }else{
+                Toast.makeText(LoginActivity.this, "Login error!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
